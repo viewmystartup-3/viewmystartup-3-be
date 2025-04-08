@@ -4,6 +4,9 @@ const investmentRouter = require("./investment.module");
 
 const router = express.Router();
 
+// TODO: /api 가 반복되는 것의 문제
+// TODO: 두 라우터 모두 companies인 것 이상하다.
+
 router.use("/api/companies", companiesRouter);
 router.use("/api/companies", investmentRouter);
 

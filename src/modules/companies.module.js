@@ -144,6 +144,7 @@ companiesRouter.post(
         },
       });
 
+      // TODO: prisma의 update many 사용하도록 수정할 것
       //비교 기업들 카운트 증가
       await Promise.all(
         compareCompanyIds.map((id) =>
@@ -169,7 +170,7 @@ companiesRouter.post(
 /**
  * 기업 삭제
  * DELETE /companies/:id
- */
+ */ // TODO: 그냥 :id 보다는 :companyId가 더 좋다.
 companiesRouter.delete("/:id", errorHandler, async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -206,6 +207,7 @@ companiesRouter.put("/:id", errorHandler, async (req, res, next) => {
     const updatedCompany = await prisma.company.update({
       where: { id },
       data: {
+        // TODO: 너무 복잡하게 쓰여 있음. 가르쳐 준대로 다시 작성해 주세요~
         ...(name !== undefined && { name }),
         ...(description !== undefined && { description }),
         ...(category !== undefined && { category }),
@@ -222,6 +224,7 @@ companiesRouter.put("/:id", errorHandler, async (req, res, next) => {
   }
 });
 
+// TODO: 사용하는 곳이 없는 API -> 삭제 요망
 /**
  * 기업 이름으로 조회
  */

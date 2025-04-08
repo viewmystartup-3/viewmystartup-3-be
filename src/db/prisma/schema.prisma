@@ -31,6 +31,6 @@ model Investment {
   comment   String
   updateAt  DateTime @updatedAt
   createdAt DateTime @default(now())
-  Company   Company? @relation(fields: [companyId], references: [id])
+  Company   Company? @relation(fields: [companyId], references: [id]) // TODO: onDelete Cascade 적용하는 게 좋을 듯
   companyId Int?
 }

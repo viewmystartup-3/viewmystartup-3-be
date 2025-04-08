@@ -8,7 +8,7 @@ const investmentRouter = express.Router();
 
 /**
  * 기업에 투자 추가(생성)
- */
+ */ // TODO: 그냥 id 보다는 companyId라고 명시적으로 알려주자
 investmentRouter.post("/:id/investments", async (req, res, next) => {
   try {
     const companyId = Number(req.params.id);
@@ -32,7 +32,7 @@ investmentRouter.post("/:id/investments", async (req, res, next) => {
     const newInvestment = await prisma.investment.create({
       data: {
         name,
-        password: hashedPassword, // 해시화된 비밀번호 저장
+        password: hashedPassword, // 해시화된 비밀번호 저장 // TODO: investment의 password 필드 이름 바꾸라.....
         amount,
         comment,
         companyId,
@@ -115,35 +115,40 @@ investmentRouter.patch(
 /**
  * 투자 내역 삭제
  */
-investmentRouter.delete("/:id/investments/:investmentId", async (req, res, next) => {
-  try {
-    const { investmentId } = req.params;
-    const { password } = req.body; 
+investmentRouter.delete(
+  "/:id/investments/:investmentId",
+  async (req, res, next) => {
+    try {
+      const { investmentId } = req.params;
+      const { password } = req.body;
 
-    const investment = await prisma.investment.findUnique({
-      where: { id: Number(investmentId) },
-    });
+      const investment = await prisma.investment.findUnique({
+        where: { id: Number(investmentId) },
+      });
 
-    if (!investment) {
-      return res.status(404).json({ message: "투자 내역이 없습니다." });
+      if (!investment) {
+        return res.status(404).json({ message: "투자 내역이 없습니다." });
+      }
+
+      // 비밀번호 검증 하고, 틀리면 No 삭제
+      const isValid = await bcrypt.compare(password, investment.password);
+      if (!isValid) {
+        return res.status(401).json({ message: "비밀번호가 틀렸습니다." });
+      }
+
+      // 비밀번호가 맞으면 삭제
+      await prisma.investment.delete({
+        where: { id: Number(investmentId) },
+      });
+
+      res
+        .status(200)
+        .json({ message: "투자 내역이 성공적으로 삭제되었습니다." });
+    } catch (e) {
+      next(e);
     }
-
-    // 비밀번호 검증 하고, 틀리면 No 삭제
-    const isValid = await bcrypt.compare(password, investment.password);
-    if (!isValid) {
-      return res.status(401).json({ message: "비밀번호가 틀렸습니다." });
-    }
-    
-    // 비밀번호가 맞으면 삭제
-    await prisma.investment.delete({
-      where: { id: Number(investmentId) },
-    });
-
-    res.status(200).json({ message: "투자 내역이 성공적으로 삭제되었습니다." });
-  } catch (e) {
-    next(e);
   }
-});
+);
 
 // 투자 비밀번호 확인 요청청
 investmentRouter.post(
@@ -173,7 +178,5 @@ investmentRouter.post(
     }
   }
 );
-
-
 
 module.exports = investmentRouter;
