@@ -103,43 +103,19 @@ npm run dev
  ## 파일 구조
 ```
 src
-├── api                          # Axios 인스턴스 및 API 통신 함수 정의
-│   ├── axiosInstance.api.js
-│   ├── company.api.js
-│   └── investment.api.js
-│
-├── assets                       # 이미지, 폰트 등 정적 파일
-│
-├── components                   # 공통 UI 컴포넌트
-│   ├── buttons                  # 버튼 관련 컴포넌트
-│   ├── modals                   # 모달 컴포넌트
-│   │   ├── investModal         # 투자 관련 모달
-│   │   └── select              # 회사 선택 및 검색 관련 모달
-│   ├── topBar                   # 모달 상단바 컴포넌트
-│   └── UI modules              # Header, Pagination, Search 등 일반 UI 요소
-│       ├── header
-│       ├── pagination
-│       ├── search
-│       └── selectBox
-│
-├── constants                    # 상수 정의 (ex. 정렬 옵션 등)
-│   └── sortOptions.js
-│
-├── pages                        # 실제 페이지(화면) 단위 컴포넌트
-│   ├── companyDetailPage        # 기업 상세 페이지
-│   ├── investmentDetailTable    # 투자 상세 테이블 페이지
-│   │   └── tableModule         # 에러/비밀번호 모달, 테이블 모듈
-│   ├── myPage                   # 마이페이지
-│   │   └── myPageTable         # 마이페이지 내 테이블 관련 컴포넌트
-│   ├── notfound                 # 404 Not Found 페이지
-│   └── tablepage               # 비교, 홈, 투자 페이지
-│       ├── comparisonPage
-│       ├── homepage
-│       └── investmentPage
-│
-├── styles                       # 전역 스타일 파일
-│
-├── App.jsx                      # 전체 앱 구성 루트 컴포넌트
-└── main.jsx                     # React 앱 진입점
+├── db                          # Prisma 관련 파일 및 마이그레이션
+│   └── prisma
+│       ├── migrations         # Prisma 마이그레이션 관련 파일
+│       │   └── client.prisma.js
+│       └── schema.prisma      # Prisma 스키마 정의 파일
+├── middlewares                # 공통 미들웨어 정의
+│   └── errorHandler.middleware.js
+├── mock                       # 더미 데이터 및 시드 스크립트
+│   └── seed.js
+├── modules                    # 도메인별 모듈 (비즈니스 로직)
+│   ├── companies.module.js
+│   ├── index.module.js
+│   └── investment.module.js
+└── app.js                     # 애플리케이션 엔트리 포인트
 ```
 
